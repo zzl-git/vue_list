@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+       <child v-bind="obj" tiele="这是一个必传属性"></child>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        Vue.component("child", {
+            template: `<div>{{tiele}}{{aaa}}{{bbb}}</div>`,
+            props: {
+                tiele: {
+                    type: String,
+                    // 对象或数组默认值必须从一个工厂函数获取
+                    default: 'aa',
+                    required: true
+                },
+                aaa: Number,
+                bbb:Number
+            }
+        })
+
+        new Vue({
+            el: "#app",
+            data: {
+                obj: {
+                    aaa: 111,
+                    bbb: 222
+                }
+            }
+        })
+    </script>
+</body>
+</html>

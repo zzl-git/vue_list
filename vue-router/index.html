@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .router-link-active {
+            color: #fff;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/"
+        exact
+        >
+            导航yi
+        </router-link>
+        <router-link to="/bar/321">导航2</router-link>
+       <transition name="slide-right">
+        <keep-alive>
+            <router-view></router-view>
+        </keep-alive>
+       </transition>
+    </div>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script>
+         const User = {template: `
+             <div>1111</div>
+             `
+         }
+         const User1 = {template: `
+             <div>222</div>
+             `
+         }
+         const NavLink = {
+             template:`
+                <div>
+                <slot></slot>
+                这是一个组件</div>
+             `,
+             methods: {
+                navigate(e) {
+                    console.log(e)
+                }
+             },
+             
+         }
+        const Foo = {
+            template: `<div>222</div>`,
+            computed: {
+                username(){
+                    return this.$route.toString()
+                }
+            },
+            methods: {
+                getRouter(){
+                    // console.log(this.$router);
+                    
+                },
+                navigate(e) {
+                    console.log(e)
+                }
+            },
+            created() {
+               this.getRouter() 
+            },
+        }
+        // {{ $route.params.username }}
+        //       {{ $route.params.post_id }}
+        const Bar = {template: `<div>
+            {{id}}
+             <router-link to="/user1">子导航1</router-link>
+             <router-link to="/user2">子导航2</router-link>
+             <router-view></router-view>
+            </div>`,
+            props:['id']
+        }
+        const routes =[
+            {
+                path:"/",
+                redirect: '/foo',
+                },
+                {
+                path:"/foo",
+                component:Foo,
+                },
+            {
+                path:"/bar/:id",
+                component:Bar,
+                props: true,
+                children:[{
+                    path:"/user1",
+                    component: User,
+                    
+                },{
+                    path:"/user2",
+                    component: User1
+                }]
+            }
+        ]
+        const router = new VueRouter({
+            routes
+        })
+
+        // 守卫
+        router.beforeEach((to, from, next) => {
+            // to and from are both route objects. must call `next`.
+            // console.log('我执行了2');
+            next()
+        })
+        router.beforeResolve((to, from, next) => {
+            // to and from are both route objects. must call `next`.
+            // console.log('我执行了1');
+            next()
+        })
+
+        const app = new Vue({
+            el:"#app",
+            data() {
+                return {
+                    isActive:false
+                }
+            },
+            router,
+            components:{
+                NavLink
+            },
+            
+        })
+    </script>
+</body>
+</html>

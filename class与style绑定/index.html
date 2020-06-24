@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .active {
+            color: red;
+        }
+        .bgc {
+            background-color: pink;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <p :class="{active: isActive, bgc: isBgc}">是否active这个class</p>
+        <p :class = "classObj">对象里的类</p>
+        <p :class = "newClassObj">计算属性</p>
+        <p :class = "[isActive?getActive:'']">数组</p>
+        <p :style="[style]">6546</p>
+        <button @click= "chenge">改变</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                style:{
+                    color: 'red',
+                    transform: 'translateY(-20px)'
+                },
+
+                isActive: true,
+                isBgc: true,
+                //对象类绑定
+                classObj:{
+                    "active": true
+                },
+                //数组
+                getActive: 'active'
+                /*
+                * 错误写法
+                *  classObj:{
+                *    "active": this.isActive
+                * }
+                */
+            },
+            created() {
+               
+            },
+            computed: {
+                //正确写法
+                newClassObj(){
+                    return {
+                        active: this.isActive
+                    }
+                }
+            },
+            mounted() {
+                
+            },
+            methods: {
+                chenge() {
+                    this.isActive = !this.isActive
+                }
+            },
+        })
+    </script>
+</body>
+</html>

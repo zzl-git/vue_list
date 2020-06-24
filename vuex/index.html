@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuex@2.0.0"></script>
+   <script>
+       const SEMO_MOTA = 'SEMO_MOTA'
+        const store = new Vuex.Store({
+           // ...
+           state:{
+               count: 0,
+               todos: [
+                    { id: 1, text: '...', done: true },
+                    { id: 2, text: '...', done: false }
+                    ],
+                    unm:0
+           },
+           getters: {
+               getTodos: state => {
+                   return state.todos.filter(todo => todo.done)
+               },
+               getTodoToId: (state)=> {
+                    return (id)=> {
+                          return state.todos.find(todo=>todo.id ===id)
+                        }
+               },
+               getUnm: (state)=>{
+                    return state.unm
+               }
+           },
+           mutations:{
+               increment(state,payload) {
+                   state.count+=payload.amount
+               },
+               todoUnm(state,data) {
+                   state.unm += data
+               },
+               [SEMO_MOTA](state,data){
+                   console.log(data,this)
+               }
+           },
+           actions:{
+            todoUnm(context,data) {
+                   context.commit('todoUnm',data)
+               }
+           }
+       })
+        const mapState = Vuex.mapState
+        const mapGetters = Vuex.mapGetters
+        const mapActions = Vuex.mapActions
+        
+        new Vue({
+
+        el:"#app",
+        store,
+        data() {
+            return {
+                todolist:this.$store.getters.getTodoToId(2)
+            }
+        },
+        template:`
+            <div>
+            {{count}}
+            计数：{{getUnm}}
+            </div>
+        `,
+            computed: {
+                ...mapState([
+                    'count'
+                ]),
+                ...mapGetters([
+                    'getUnm'
+                ])
+                
+            //  count(){
+            //      return this.$store.state.count
+            //  }   
+            },
+            mounted() {
+                console.log(this.todolist);
+                this.$store.commit({
+                    type:'increment',
+                    amount:15
+                })
+                this.$store.commit({
+                    type:'increment',
+                    amount:16
+                })
+                this.$store.commit('SEMO_MOTA',11)
+                this.todoUnm(200)
+                this.ccc(333)(444)
+            }
+        ,
+        methods: {
+        ...mapActions([
+                'todoUnm'
+            ]),
+
+            ccc:(aa)=>(bb)=> {
+                alert(bb)
+            }
+          
+
+
+        },
+    })
+   </script>
+</body>
+</html>

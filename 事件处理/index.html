@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input
+            type="checkbox"
+            v-model="toggle"
+            true-value="yes"
+            false-value="no"
+            @change="chengeInput"
+            value="点击改变"
+        >
+       <p>我按了{{key}}键</p>
+       <input type="text" @keyup="keyCode">
+       <input v-model.lazy="msg">
+       <p>{{msg}}</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+       
+        var vm =new Vue({
+            el: '#app',
+            data: {
+                key: '',
+                toggle: '',
+                msg: ''
+            },
+            created() {
+                // addEventListener('mouseup',function(e){
+                //     console.log(e)
+                // })
+                // addEventListener('keydown',function(e){
+                //     console.log(e)
+                // })
+            },
+            methods: {
+                chengeInput(){
+                    console.log(vm.toggle);
+                },
+                keyCode(e){
+                    this.key += e.key
+                }
+            },
+        })
+    </script>
+</body>
+</html>
